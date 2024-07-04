@@ -269,6 +269,11 @@ app.delete("/users/:id/:movieTitle", (req, res) => {
   res.send('Successful DELETE request to remove a movie from user\'s favorites');
 });
 
+// DELETE User
+app.delete("/users/:id", (req, res) => {
+  res.send('Successful DELETE request to deregister a user');
+});
+
 app.get("/", (req, res) => {
   res.send("Welcome to my silent movie app!");
 });
