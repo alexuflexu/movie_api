@@ -1,19 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <h1>MyFlix API</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silent Movie App API Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Silent Movie App API Documentation</h1>
+    
     <p>
-      The MyFlix API is the server-side component of a movie web application. It
-      provides users with access to information about movies, directors, and
-      genres. The API allows users to sign up, update their personal
-      information, and create a list of their favorite movies. Developers can
-      use this API to build interactive web applications focused on movie
-      exploration and user preference management.
+        The Silent Movie App API provides access to information about silent movies, directors, and genres. 
+        Users can sign up, update their information, and manage their favorite movies list.
     </p>
-  </body>
+
+    <h2>Endpoints</h2>
+    <table>
+        <tr>
+            <th>Method</th>
+            <th>Endpoint</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>GET</td>
+            <td>/movies</td>
+            <td>Get all movies</td>
+        </tr>
+        <tr>
+            <td>GET</td>
+            <td>/movies/:title</td>
+            <td>Get a specific movie by title</td>
+        </tr>
+        <tr>
+            <td>GET</td>
+            <td>/movies/genre/:genreName</td>
+            <td>Get genre details by name</td>
+        </tr>
+        <tr>
+            <td>GET</td>
+            <td>/movies/directors/:directorName</td>
+            <td>Get director details by name</td>
+        </tr>
+        <tr>
+            <td>POST</td>
+            <td>/users</td>
+            <td>Create a new user</td>
+        </tr>
+        <tr>
+            <td>PUT</td>
+            <td>/users/:id</td>
+            <td>Update a user's information</td>
+        </tr>
+        <tr>
+            <td>POST</td>
+            <td>/users/:id/:movieTitle</td>
+            <td>Add a movie to a user's favorites</td>
+        </tr>
+        <tr>
+            <td>DELETE</td>
+            <td>/users/:id/:movieTitle</td>
+            <td>Remove a movie from a user's favorites</td>
+        </tr>
+    </table>
+</body>
 </html>
