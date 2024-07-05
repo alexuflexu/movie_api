@@ -10,19 +10,20 @@ app.use(morgan("common"));
 
 let users = [
   {
-    id: 1,
-    name: "John",
-    favoriteMovies: [],
+    "id": 1,
+    "name": "John",
+    "favoriteMovies": [],
   },
   {
-    id: 2,
-    name: "Jane",
-    favoriteMovies: ["Intolerance"],
+    "id": 2,
+    "name": "Jane",
+    "favoriteMovies": [3],
   },
 ];
 
 let movies = [
   {
+    "id": 1,
     "Title": "A Trip to the Moon",
     "Synopsis":
       "A group of astronomers travel to the Moon in a cannon-propelled capsule, explore its surface, and encounter its inhabitants.",
@@ -41,6 +42,7 @@ let movies = [
     "featured": false,
   },
   {
+    "id": 2,
     "Title": "The Great Train Robbery",
     "Synopsis": "A groundbreaking narrative film depicting a train heist and its aftermath, featuring innovative editing techniques.",
     "Genre": {
@@ -57,6 +59,7 @@ let movies = [
     "featured": false,
   },
   {
+    "id": 3,
     "Title": "Intolerance",
     "Synopsis": "An epic film interweaving four storylines from different historical periods to explore the theme of intolerance throughout history.",
     "Genre": {
@@ -73,6 +76,7 @@ let movies = [
     "featured": false,
   },
   {
+    "id": 4,
     "Title": "The Cabinet of Dr. Caligari",
     "Synopsis": "A landmark of German Expressionist cinema, telling the twisted tale of an insane hypnotist who uses a sleepwalker to commit murders.",
     "Genre": {
@@ -89,6 +93,7 @@ let movies = [
     "featured": false,
   },
   {
+    "id": 5,
     "Title": "The Phantom Carriage",
     "Synopsis": "A Swedish silent film about a drunkard who must drive Death\'s carriage and collect souls for a year, featuring groundbreaking special effects.",
     "Genre": {
@@ -105,6 +110,7 @@ let movies = [
     "featured": false,
   },
   {
+    "id": 6,
     "Title": "Nosferatu",
     "Synopsis": "An unauthorized adaptation of Bram Stoker\'s Dracula, this influential vampire film is renowned for its eerie atmosphere and iconic visuals.",
     "Genre": {
@@ -121,6 +127,7 @@ let movies = [
     "featured": false,
   },
   {
+    "id": 7,
     "Title": "The General",
     "Synopsis": "A silent comedy set during the American Civil War, following a Confederate train engineer\'s attempts to recover his stolen locomotive.",
     "Genre": {
@@ -137,6 +144,7 @@ let movies = [
     "featured": false,
   },
   {
+    "id": 8,
     "Title": "Metropolis",
     "Synopsis": "A visually stunning dystopian film set in a futuristic city, exploring themes of class struggle and industrialization.",
     "Genre": {
@@ -153,6 +161,7 @@ let movies = [
     "featured": false,
   },
   {
+    "id": 9,
     "Title": "The Passion of Joan of Arc",
     "Synopsis": "A powerful silent film depicting the trial of Joan of Arc, known for its innovative use of close-ups and emotional performances.",
     "Genre": {
@@ -169,6 +178,7 @@ let movies = [
     "featured": false,
   },
   {
+    "id": 10,
     "Title": "The Man with a Movie Camera",
     "Synopsis": "An experimental silent documentary film with no story and no actors, showcasing urban life in Soviet cities through innovative camera techniques.",
     "Genre": {
@@ -260,19 +270,55 @@ app.put("/users/:id", (req, res) => {
 })
 
 // CREATE - Add a movie to favorite
-app.post("/users/:id/:movieTitle", (req, res) => {
-  res.send("Successful POST request to add a movie to user\'s favorites");
-});
+app.post("/users/:id/movies/:movieId", (req, res) => {
+  const { id, movieId } = req.params;
+  const user = users.find((user) => user.id === parseInt(id));
+  const movie = movies.find((movie) => movie.id === parseInt(movieId));
+  
+  if (user && movie) {
+  if (!user.favoriteMovies.includes(parseInt(movieId))) {
+    user.favoriteMovies.push(parseInt(movieId));
+  res.status(200).json(user);
+  } else {
+  res.status(400).send("Movie already in favorites");
+  }
+  } else {
+  res.status(404).send("User or Movie not found");
+  }
+  });
 
 // DELETE - Remove a movie from favorites
-app.delete("/users/:id/:movieTitle", (req, res) => {
-  res.send('Successful DELETE request to remove a movie from user\'s favorites');
-});
+app.delete("/users/:id/movies/:movieId", (req, res) => {
+  const { id, movieId } = req.params;
+  const user = users.find((user) => user.id === parseInt(id));
+  
+  if (user) {
+  const initialLength = user.favoriteMovies.length;
+  user.favoriteMovies = user.favoriteMovies.filter((favMovieId) => favMovieId !== parseInt(movieId));
+  
+  if (user.favoriteMovies.length < initialLength) {
+  res.status(200).json(user);
+  } else {
+  res.status(404).send("Movie not found in favorites");
+  }
+  } else {
+  res.status(404).send("User not found");
+  }
+  });
 
 // DELETE User
 app.delete("/users/:id", (req, res) => {
-  res.send('Successful DELETE request to deregister a user');
-});
+  const { id } = req.params;
+  
+  const initialLength = users.length;
+  users = users.filter(user => user.id !== parseInt(id));
+  
+  if (users.length < initialLength) {
+    res.status(200).send(`User with ID ${id} was deleted.`);
+  } else {
+  res.status(404).send("User not found.");
+  }
+  });
 
 app.get("/", (req, res) => {
   res.send("Welcome to my silent movie app!");
