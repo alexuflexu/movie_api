@@ -50,18 +50,18 @@
         </tr>
         <tr>
             <td>GET</td>
-            <td>/movies/:title</td>
-            <td>Get a specific movie by title</td>
+            <td>/movies/:id</td>
+            <td>Get a specific movie by ID</td>
         </tr>
         <tr>
             <td>GET</td>
-            <td>/movies/genre/:genreName</td>
-            <td>Get genre details by name</td>
+            <td>/movies/genres/:genreName</td>
+            <td>Get movies by genre name</td>
         </tr>
         <tr>
             <td>GET</td>
             <td>/movies/directors/:directorName</td>
-            <td>Get director details by name</td>
+            <td>Get movies by director name</td>
         </tr>
         <tr>
             <td>POST</td>
@@ -70,22 +70,22 @@
         </tr>
         <tr>
             <td>PUT</td>
-            <td>/users/:id</td>
+            <td>/users/:Username</td>
             <td>Update a user's information</td>
         </tr>
         <tr>
             <td>POST</td>
-            <td>/users/:id/:movieTitle</td>
+            <td>/users/:Username/movies/:MovieID</td>
             <td>Add a movie to a user's favorites</td>
         </tr>
         <tr>
             <td>DELETE</td>
-            <td>/users/:id/:movieTitle</td>
+            <td>/users/:Username/movies/:MovieID</td>
             <td>Remove a movie from a user's favorites</td>
         </tr>
         <tr>
             <td>DELETE</td>
-            <td>/users/:id</td>
+            <td>/users/:Username</td>
             <td>Deregister a user</td>
         </tr>
     </table>
