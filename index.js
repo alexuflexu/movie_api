@@ -1,14 +1,23 @@
+const mongoose = require('mongoose');
+const Models = require('./models.js');
+
+const Movies = Models.Movie;
+const Users = Models.User;
+
+
+mongoose.connect('mongodb://localhost:27017/mongoAppDB');
+
 const express = require("express");
-(app = express()),
-  (bodyParser = require("body-parser")),
-  (uuid = require("uuid"));
+const app = express();
+uuid = require("uuid");
 morgan = require("morgan");
 
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(morgan("common"));
 
-let users = [
+/*let users = [
   {
     "id": 1,
     "name": "John",
@@ -38,24 +47,24 @@ let movies = [
       "Birth": 1861,
       "Death": 1938,
     },
-    "imageURL": "img",
+    "imageURL": "https://en.wikipedia.org/wiki/A_Trip_to_the_Moon#/media/File:Le_Voyage_dans_la_lune.jpg",
     "featured": false,
   },
   {
     "id": 2,
-    "Title": "The Great Train Robbery",
-    "Synopsis": "A groundbreaking narrative film depicting a train heist and its aftermath, featuring innovative editing techniques.",
+    "Title": "The Kingdom of the Fairies",
+    "Synopsis": "A spectacular fantasy film featuring elaborate sets, costumes, and special effects, following a prince's quest to rescue a princess from an evil witch.",
     "Genre": {
-      "Name": "western",
-      "Description": "A genre of fiction set in the American Old West frontier, typically in the late 19th century.",
+      "Name": "fantasy",
+      "Description": "A genre that uses magic and other supernatural phenomena as a primary element of plot, theme, or setting.",
     },
     "Director": {
-      "Name": "Edwin S. Porter",
-      "Bio": "Edwin S. Porter was an influential American filmmaker who played a crucial role in developing early narrative cinema and editing techniques.",
-      "Birth": 1870,
-      "Death": 1941,
+      "Name": "Georges Méliès",
+      "Bio": "Georges Méliès was a pioneering French filmmaker who revolutionized early cinema with his innovative special effects and fantastical storytelling.",
+      "Birth": 1861,
+      "Death": 1938,
     },
-    "imageURL": "img",
+    "imageURL": "https://en.wikipedia.org/wiki/The_Kingdom_of_the_Fairies#/media/File:Royaume_des_fees.jpg",
     "featured": false,
   },
   {
@@ -72,7 +81,7 @@ let movies = [
       "Birth": 1875,
       "Death": 1948,
     },
-    "imageURL": "img",
+    "imageURL": "https://en.wikipedia.org/wiki/Intolerance_(film)#/media/File:Intolerance_(film).jpg",
     "featured": false,
   },
   {
@@ -89,7 +98,7 @@ let movies = [
       "Birth": 1873,
       "Death": 1938,
     },
-    "imageURL": "img",
+    "imageURL": "https://en.wikipedia.org/wiki/The_Cabinet_of_Dr._Caligari#/media/File:The_Cabinet_of_Dr._Caligari_poster.jpg",
     "featured": false,
   },
   {
@@ -106,7 +115,7 @@ let movies = [
       "Birth": 1879,
       "Death": 1960,
     },
-    "imageURL": "img",
+    "imageURL": "https://en.wikipedia.org/wiki/The_Phantom_Carriage#/media/File:The_Phantom_Carriage_(1921)_poster.jpg",
     "featured": false,
   },
   {
@@ -123,24 +132,24 @@ let movies = [
       "Birth": 1888,
       "Death": 1931,
     },
-    "imageURL": "img",
+    "imageURL": "https://en.wikipedia.org/wiki/Nosferatu#/media/File:Nosferatuposter.jpg",
     "featured": false,
   },
   {
     "id": 7,
-    "Title": "The General",
-    "Synopsis": "A silent comedy set during the American Civil War, following a Confederate train engineer\'s attempts to recover his stolen locomotive.",
+    "Title": "One Week",
+    "Synopsis": "A newly wedded couple attempts to build a house with a prefabricated kit, unaware that a rival has sabotaged the plans, leading to comedic mishaps.",
     "Genre": {
       "Name": "comedy",
       "Description": "A genre intended to amuse and provoke laughter through humorous situations, witty dialogue, or physical gags.",
     },
     "Director": {
-      "Name": "Buster Keaton, Clyde Bruckman",
-      "Bio": "Buster Keaton was a legendary American comedian and filmmaker renowned for his physical comedy. Clyde Bruckman was a talented American director and screenwriter who collaborated with great comedians of the silent era.",
+      "Name": "Buster Keaton",
+      "Bio": "Buster Keaton was a legendary American comedian and filmmaker renowned for his physical comedy and deadpan expression, earning him the nickname 'The Great Stone Face'.",
       "Birth": 1895,
       "Death": 1966,
     },
-    "imageURL": "img",
+    "imageURL": "https://en.wikipedia.org/wiki/One_Week_(1920_film)#/media/File:Buster_Keaton_One_Week_Ad_-_Motion_Picture_News_(Oct_9,_1920).jpg",
     "featured": false,
   },
   {
@@ -157,7 +166,7 @@ let movies = [
       "Birth": 1890,
       "Death": 1976,
     },
-    "imageURL": "img",
+    "imageURL": "https://en.wikipedia.org/wiki/Metropolis_(1927_film)#/media/File:Metropolis_(German_three-sheet_poster).jpg",
     "featured": false,
   },
   {
@@ -174,7 +183,7 @@ let movies = [
       "Birth": 1889,
       "Death": 1968,
     },
-    "imageURL": "img",
+    "imageURL": "https://en.wikipedia.org/wiki/The_Passion_of_Joan_of_Arc#/media/File:The_Passion_of_Joan_of_Arc_(1928)_English_Poster.png",
     "featured": false,
   },
   {
@@ -191,134 +200,169 @@ let movies = [
       "Birth": 1896,
       "Death": 1954,
     },
-    "imageURL": "img",
+    "imageURL": "https://en.wikipedia.org/wiki/Man_with_a_Movie_Camera#/media/File:Man_with_a_movie_camera_1929_2.png",
     "featured": false,
   },
 ];
-
+*/
 
 // READ - Get all movies
-app.get("/movies", (req, res) => {
-  res.status(200).json(movies);
+app.get("/movies", async (req, res) => {
+  await Movies.find()
+    .then((movies) => {
+      res.status(200).json(movies);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
 });
 
-// READ - Get movie by title
-app.get("/movies/:title", (req, res) => {
-  const { title } = req.params;
-  const movie = movies.find((movie) => movie.Title === title);
 
-  if (movie) {
-    res.status(200).json(movie);
-  } else {
-    res.status(404).send("Movie not found");
-  }
+// READ - Get movie by title
+app.get("/movies/:title", async (req, res) => {
+  await Movies.findOne({ Title: req.params.title })
+    .then((movie) => {
+      if (movie) {
+        res.status(200).json(movie);
+      } else {
+        res.status(404).send("Movie not found");
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
 });
 
 // READ - Get genre by name
-app.get("/movies/genre/:genreName", (req, res) => {
-  const { genreName } = req.params;
-  const genre = movies.find((movie) => movie.Genre.Name === genreName).Genre;
-
-  if (genre) {
-    res.status(200).json(genre);
-  } else {
-    res.status(404).send("Genre not found");
-  }
+app.get("/movies/genre/:genreName", async (req, res) => {
+  await Movies.findOne({ "Genre.Name": req.params.genreName })
+    .then((movie) => {
+      if (movie) {
+        res.status(200).json(movie.Genre);
+      } else {
+        res.status(404).send("Genre not found");
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
 });
 
 // READ - Get director by name
-app.get("/movies/directors/:directorName", (req, res) => {
-  const { directorName } = req.params;
-  const director = movies.find((movie) => movie.Director.Name === directorName).Director;
-
-  if (director) {
-    res.status(200).json(director);
-  } else {
-    res.status(404).send("Director not found");
-  }
+app.get("/movies/directors/:directorName", async (req, res) => {
+  await Movies.findOne({ "Director.Name": req.params.directorName })
+    .then((movie) => {
+      if (movie) {
+        res.status(200).json(movie.Director);
+      } else {
+        res.status(404).send("Director not found");
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
 });
 
 
 
 // CREATE - New user
-app.post("/users", (req, res) => {
-  const newUser = req.body;
-
-  if (newUser.name) {
-    newUser.id = uuid.v4();
-    users.push(newUser);
-    res.status(201).json(newUser)
-  } else {
-    res.status(400).send("Users need names")
-  }
-})
+app.post('/users', async (req, res) => {
+  await Users.findOne({ Username: req.body.Username })
+    .then((user) => {
+      if (user) {
+        return res.status(400).send(req.body.Username + 'already exists');
+      } else {
+        Users
+          .create({
+            Username: req.body.Username,
+            Password: req.body.Password,
+            Email: req.body.Email,
+            Birthday: req.body.Birthday
+          })
+          .then((user) =>{res.status(201).json(user) })
+        .catch((error) => {
+          console.error(error);
+          res.status(500).send('Error: ' + error);
+        })
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
+});
 
 // UPDATE User name
-app.put("/users/:id", (req, res) => {
-  const { id } = req.params;
-  const updatedUser = req.body;
+app.put('/users/:Username', async (req, res) => {
+  await Users.findOneAndUpdate({ Username: req.params.Username }, { $set:
+    {
+      Username: req.body.Username,
+      Password: req.body.Password,
+      Email: req.body.Email,
+      Birthday: req.body.Birthday
+    }
+  },
+  { new: true }) 
+  .then((updatedUser) => {
+    res.json(updatedUser);
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send('Error: ' + err);
+  })
 
-  let user = users.find(user => user.id === parseInt(id));
-
-  if (user) {
-    user.name = updatedUser.name;
-    res.status(200).json(user)
-  } else {
-    res.status(400).send("User not found")
-  }
-
-})
+});
 
 // CREATE - Add a movie to favorite
-app.post("/users/:id/movies/:movieId", (req, res) => {
-  const { id, movieId } = req.params;
-  const user = users.find((user) => user.id === parseInt(id));
-  const movie = movies.find((movie) => movie.id === parseInt(movieId));
-  
-  if (user && movie) {
-  if (!user.favoriteMovies.includes(parseInt(movieId))) {
-    user.favoriteMovies.push(parseInt(movieId));
-  res.status(200).json(user);
-  } else {
-  res.status(400).send("Movie already in favorites");
-  }
-  } else {
-  res.status(404).send("User or Movie not found");
-  }
+app.post('/users/:Username/movies/:MovieID', async (req, res) => {
+  await Users.findOneAndUpdate({ Username: req.params.Username }, {
+     $push: { FavoriteMovies: req.params.MovieID }
+   },
+   { new: true }) 
+  .then((updatedUser) => {
+    res.json(updatedUser);
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send('Error: ' + err);
   });
+});
 
 // DELETE - Remove a movie from favorites
-app.delete("/users/:id/movies/:movieId", (req, res) => {
-  const { id, movieId } = req.params;
-  const user = users.find((user) => user.id === parseInt(id));
-  
-  if (user) {
-  const initialLength = user.favoriteMovies.length;
-  user.favoriteMovies = user.favoriteMovies.filter((favMovieId) => favMovieId !== parseInt(movieId));
-  
-  if (user.favoriteMovies.length < initialLength) {
-  res.status(200).json(user);
-  } else {
-  res.status(404).send("Movie not found in favorites");
-  }
-  } else {
-  res.status(404).send("User not found");
-  }
+app.delete('/users/:Username/movies/:MovieID', async (req, res) => {
+  await Users.findOneAndUpdate({ Username: req.params.Username }, {
+     $pull: { FavoriteMovies: req.params.MovieID }
+   },
+   { new: true }) 
+  .then((updatedUser) => {
+    res.json(updatedUser);
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send('Error: ' + err);
   });
+});
 
-// DELETE User
-app.delete("/users/:id", (req, res) => {
-  const { id } = req.params;
-  
-  const initialLength = users.length;
-  users = users.filter(user => user.id !== parseInt(id));
-  
-  if (users.length < initialLength) {
-    res.status(200).send(`User with ID ${id} was deleted.`);
-  } else {
-  res.status(404).send("User not found.");
-  }
-  });
+// DELETE User by username
+app.delete('/users/:Username', async (req, res) => {
+  await Users.findOneAndRemove({ Username: req.params.Username })
+    .then((user) => {
+      if (!user) {
+        res.status(400).send(req.params.Username + ' was not found');
+      } else {
+        res.status(200).send(req.params.Username + ' was deleted.');
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
+
 
 app.get("/", (req, res) => {
   res.send("Welcome to my silent movie app!");
