@@ -7,7 +7,7 @@ const Users = Models.User;
 
 /*mongoose.connect('mongodb://localhost:27017/mongoAppDB');*/
 
-mongoose.connect('process.env.CONNECTION_URI');
+mongoose.connect(process.env.CONNECTION_URI);
 
 
 const express = require("express");
@@ -23,17 +23,6 @@ const cors = require('cors');
 
 app.use(cors());
 
-
-app.use(cors({
-  origin: (origin, callback) => {
-    if(!origin) return callback(null, true);
-    if(allowedOrigins.indexOf(origin) === -1){ 
-      let message = 'The CORS policy for this application doesn\’tnp allow access from origin ' + origin;
-      return callback(new Error(message ), false);
-    }
-    return callback(null, true);
-  }
-}));
 
 const { check, validationResult } = require('express-validator');
 
@@ -167,10 +156,12 @@ app.put('/users/:Username', [
     return res.status(400).send('Permission denied');
   }
 
+  let hashedPassword = Users.hashPassword(req.body.Password);
+
   await Users.findOneAndUpdate({ Username: req.params.Username }, { $set:
     {
       Username: req.body.Username,
-      Password: req.body.Password,
+      Password: hashedPassword,
       Email: req.body.Email,
       Birthday: req.body.Birthday
     }
