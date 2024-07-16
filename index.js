@@ -5,7 +5,10 @@ const Movies = Models.Movie;
 const Users = Models.User;
 
 
-mongoose.connect('mongodb://localhost:27017/mongoAppDB');
+/*mongoose.connect('mongodb://localhost:27017/mongoAppDB');*/
+
+mongoose.connect('process.env.CONNECTION_URI');
+
 
 const express = require("express");
 const app = express();
