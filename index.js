@@ -7,7 +7,14 @@ const Users = Models.User;
 
 /*mongoose.connect('mongodb://localhost:27017/mongoAppDB');*/
 
-mongoose.connect(process.env.CONNECTION_URI);
+console.log('Attempting to connect to MongoDB...');
+mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log('Successfully connected to MongoDB');
+  })
+  .catch((error) => {
+    console.error('Failed to connect to MongoDB', error);
+  });
 
 
 const express = require("express");
