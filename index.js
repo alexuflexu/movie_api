@@ -103,7 +103,16 @@ app.get("/movies/directors/:directorName", passport.authenticate('jwt', { sessio
     });
 });
 
+// GET - User
+app.get('/users/:Username', async (req, res) => {
+  const user = await Users.findOne({ Username: req.params.Username });
 
+  if (!user) {
+    return res.status(404).send("User not found!")
+  }
+
+  return res.send(user);
+});
 
 // CREATE - New user
 app.post('/users',
