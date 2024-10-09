@@ -1,7 +1,7 @@
 # MyFlix API
 
 ## Description
-MyFlix API is a RESTful web service for managing a movie database. It offers endpoints for user operations and movie information retrieval, providing authentication, user profile management, favorite movie lists, and detailed information about movies, genres, and directors.
+MyFlix API is a RESTful web service for managing a silent movie database. It offers endpoints for user operations and movie information retrieval, providing authentication, user profile management, favorite movie lists, and detailed information about movies, genres, and directors.
 
 ## Technologies Used
 - Node.js
