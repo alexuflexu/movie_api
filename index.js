@@ -42,7 +42,9 @@ app.use(morgan("common"));
 
 
 
-// READ - Get all movies
+/**
+ * GET all movies
+ */
 app.get('/movies', passport.authenticate('jwt', { session: false }),  async (req, res) => {
   await Movies.find()
     .then((movies) => {
@@ -55,7 +57,9 @@ app.get('/movies', passport.authenticate('jwt', { session: false }),  async (req
 });
 
 
-// READ - Get movie by title
+/**
+* GET movie by movie title
+*/
 app.get("/movies/:title", passport.authenticate('jwt', { session: false }), async (req, res) => {
   await Movies.findOne({ Title: req.params.title })
     .then((movie) => {
@@ -71,7 +75,9 @@ app.get("/movies/:title", passport.authenticate('jwt', { session: false }), asyn
     });
 });
 
-// READ - Get genre by name
+/**
+* GET genre by genre name
+*/
 app.get("/movies/genre/:genreName", passport.authenticate('jwt', { session: false }), async (req, res) => {
   await Movies.findOne({ "Genre.Name": req.params.genreName })
     .then((movie) => {
@@ -87,7 +93,9 @@ app.get("/movies/genre/:genreName", passport.authenticate('jwt', { session: fals
     });
 });
 
-// READ - Get director by name
+/**
+* GET director by director name
+*/
 app.get("/movies/directors/:directorName", passport.authenticate('jwt', { session: false }), async (req, res) => {
   await Movies.findOne({ "Director.Name": req.params.directorName })
     .then((movie) => {
@@ -103,7 +111,9 @@ app.get("/movies/directors/:directorName", passport.authenticate('jwt', { sessio
     });
 });
 
-// GET - User
+/**
+* GET user by username
+*/
 app.get('/users/:Username', async (req, res) => {
   const user = await Users.findOne({ Username: req.params.Username });
 
@@ -114,7 +124,9 @@ app.get('/users/:Username', async (req, res) => {
   return res.send(user);
 });
 
-// CREATE - New user
+/**
+* POST create new user
+*/
 app.post('/users',
   [
     check('Username', 'Username is required').isLength({min: 5}),
@@ -155,7 +167,9 @@ app.post('/users',
       });
   });
 
-// UPDATE User name
+/**
+* PUT update existing user
+*/
 app.put('/users/:Username', [
   check('Username', 'Username is required').isLength({min: 5}),
   check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
@@ -193,7 +207,9 @@ app.put('/users/:Username', [
 });
 
 
-// CREATE - Add a movie to favorite
+/**
+* POST add movie to favorites by movie id
+*/
 app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), async (req, res) => {
   const movieID = req.params.MovieID;
   const movie = await Movies.findById(movieID)
@@ -215,7 +231,9 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { sess
   });
 });
 
-// DELETE - Remove a movie from favorites
+/**
+* DELETE delete movie from favorites by movie id
+*/
 app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), async (req, res) => {
   await Users.findOneAndUpdate({ Username: req.params.Username }, {
      $pull: { FavoriteMovies: req.params.MovieID }
@@ -230,7 +248,9 @@ app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { se
   });
 });
 
-// DELETE User by username
+/**
+* DELETE delete user by username
+*/
 app.delete('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
   await Users.findOneAndDelete({ Username: req.params.Username })
     .then((user) => {
