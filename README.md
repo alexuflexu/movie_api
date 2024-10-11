@@ -30,6 +30,44 @@ MyFlix API is a RESTful web service for managing a silent movie database. It off
 - DELETE /users/:Username/movies/:MovieID: Remove a movie from favorites
 - DELETE /users/:Username: Delete a user account
 
+### Prerequisites
+
+- Node.js
+- MongoDB Atlas account or a local MongoDB instance
+- Render account for hosting (optional)
+
+### Installation
+
+## How to Clone
+To clone the repository, run: `git clone <repository-url>`
+
+## Install dependencies:
+
+   ```sh
+   npm install
+   ```
+
+## Create a `.env` file in the root directory and add your MongoDB connection string:
+
+   ```sh
+   CONNECTION_URI=mongodb+srv://<username>:<password>@cluster0.qlykdkm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+   ```
+
+4. Optionally, add a port to your `.env` file:
+   ```sh
+   PORT=8080
+   ```
+
+## Running the API
+
+Start the server with the following command:
+
+```sh
+node index.js
+```
+
+By default, the server will run on `http://localhost:8080`.
+
 ## Authentication
 This API uses JWT for authentication. Include the JWT token in the Authorization header for protected routes.
 
