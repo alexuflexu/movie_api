@@ -39,7 +39,7 @@ MyFlix API is a RESTful web service for managing a silent movie database. It off
 ### Installation
 
 ## How to Clone
-To clone the repository, run: `git clone <repository-url>`
+To clone the repository, run: `git clone https://github.com/alexuflexu/movie_api.git`
 
 ## Install dependencies:
 
