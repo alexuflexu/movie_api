@@ -53,11 +53,6 @@ To clone the repository, run: `git clone <repository-url>`
    CONNECTION_URI=mongodb+srv://<username>:<password>@cluster0.qlykdkm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
    ```
 
-4. Optionally, add a port to your `.env` file:
-   ```sh
-   PORT=8080
-   ```
-
 ## Running the API
 
 Start the server with the following command:
