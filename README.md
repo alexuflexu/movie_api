@@ -67,4 +67,4 @@ By default, the server will run on `http://localhost:8080`.
 This API uses JWT for authentication. Include the JWT token in the Authorization header for protected routes.
 
 ## Deployment
-This API is hosted on Render.
+This API is hosted on Render: https://movie-api-1-34lz.onrender.com
