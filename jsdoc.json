@@ -1,0 +1,12 @@
+{
+    "source": {
+      "include": ["./index.js", "./passport.js", "./auth.js", "./models.js"],
+      "includePattern": ".+\\.js(doc|on)?$"
+    },
+    "opts": {
+      "destination": "./out",
+      "recurse": true
+    },
+    "plugins": ["plugins/markdown"]
+  }
+  
